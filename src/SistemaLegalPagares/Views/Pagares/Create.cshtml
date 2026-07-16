@@ -1,0 +1,139 @@
+@model SistemaLegalPagares.Models.Pagare
+@{
+    ViewData["Title"] = "Nuevo Pagaré";
+}
+
+<div class="card" style="max-width:900px; background:#eaf7ea;">
+    <div class="card-header bg-success text-white">PAGARÉ - Nuevo</div>
+    <div class="card-body">
+        <form asp-action="Create" asp-route-expedienteId="@Model.ExpedienteId" method="post" id="pagareForm">
+            <input type="hidden" asp-for="ExpedienteId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="LugarExpedicion" class="form-label"></label>
+                    <input asp-for="LugarExpedicion" class="form-control" placeholder="Puebla, Puebla" />
+                    <span asp-validation-for="LugarExpedicion" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="FechaExpedicion" class="form-label"></label>
+                    <input asp-for="FechaExpedicion" type="date" class="form-control" value="@Model.FechaExpedicion.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="MontoTotal" class="form-label">Bueno por ($)</label>
+                    <input asp-for="MontoTotal" type="number" step="0.01" class="form-control" />
+                    <span asp-validation-for="MontoTotal" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Acreedor" class="form-label">A la orden de (Acreedor)</label>
+                    <input asp-for="Acreedor" class="form-control" />
+                    <span asp-validation-for="Acreedor" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="LugarPagoPagare" class="form-label">Lugar de Pago</label>
+                    <input asp-for="LugarPagoPagare" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FechaVencimiento" class="form-label"></label>
+                    <input asp-for="FechaVencimiento" type="date" class="form-control" />
+                    <span asp-validation-for="FechaVencimiento" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Beneficiario" class="form-label"></label>
+                    <input asp-for="Beneficiario" class="form-control" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="MontoLetra" class="form-label">La cantidad de (con letra)</label>
+                    <input asp-for="MontoLetra" class="form-control" placeholder="CINCUENTA MIL PESOS 00/100 M.N." />
+                    <span asp-validation-for="MontoLetra" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="SerieDesde" class="form-label"></label>
+                    <input asp-for="SerieDesde" type="number" min="1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SerieHasta" class="form-label"></label>
+                    <input asp-for="SerieHasta" type="number" min="1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InteresMoratorio" class="form-label">Interés Moratorio (%)</label>
+                    <input asp-for="InteresMoratorio" type="number" step="0.01" class="form-control" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Deudores asociados a este pagaré</label>
+                    <select name="deudorIds" asp-items="ViewBag.Deudores" multiple class="form-select" size="5"></select>
+                    <div class="form-text">Mantén Ctrl (o Cmd) presionado para seleccionar varios deudores.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Firma Aval</label>
+                    <canvas id="firmaAval" width="380" height="120" class="border w-100" style="touch-action:none;"></canvas>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="limpiarFirma('firmaAval')">Limpiar firma aval</button>
+                    <input type="hidden" asp-for="FirmaAvalBase64" id="FirmaAvalBase64" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Firma Deudor</label>
+                    <canvas id="firmaDeudor" width="380" height="120" class="border w-100" style="touch-action:none;"></canvas>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="limpiarFirma('firmaDeudor')">Limpiar firma deudor</button>
+                    <input type="hidden" asp-for="FirmaBase64" id="FirmaBase64" />
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-controller="Expedientes" asp-action="Details" asp-route-id="@Model.ExpedienteId" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success">Guardar Pagaré</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function setupFirma(canvasId, hiddenInputId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+            let drawing = false;
+
+            function pos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const point = e.touches ? e.touches[0] : e;
+                return { x: (point.clientX - rect.left) * scaleX, y: (point.clientY - rect.top) * scaleY };
+            }
+            function start(e) { drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+            function move(e) {
+                if (!drawing) return;
+                const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke();
+                e.preventDefault();
+            }
+            function end() {
+                if (!drawing) return;
+                drawing = false;
+                document.getElementById(hiddenInputId).value = canvas.toDataURL('image/png');
+            }
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', move);
+            window.addEventListener('mouseup', end);
+            canvas.addEventListener('touchstart', start);
+            canvas.addEventListener('touchmove', move);
+            canvas.addEventListener('touchend', end);
+        }
+        function limpiarFirma(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            const hidden = canvasId === 'firmaAval' ? 'FirmaAvalBase64' : 'FirmaBase64';
+            document.getElementById(hidden).value = '';
+        }
+        setupFirma('firmaAval', 'FirmaAvalBase64');
+        setupFirma('firmaDeudor', 'FirmaBase64');
+    </script>
+}

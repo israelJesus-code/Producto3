@@ -1,0 +1,36 @@
+@model SistemaLegalPagares.Models.Expediente
+@{
+    ViewData["Title"] = "Nuevo Expediente";
+}
+
+<div class="card" style="max-width:640px;">
+    <div class="card-header">Nuevo Expediente</div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NumeroExpediente" class="form-label"></label>
+                    <input asp-for="NumeroExpediente" class="form-control" placeholder="Ej. EXP-2026-001" />
+                    <span asp-validation-for="NumeroExpediente" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ClienteId" class="form-label">Cliente</label>
+                    <select asp-for="ClienteId" asp-items="ViewBag.Clientes" class="form-select">
+                        <option value="">Seleccione un cliente</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label asp-for="Observaciones" class="form-label"></label>
+                    <textarea asp-for="Observaciones" class="form-control" placeholder="Observaciones generales del expediente."></textarea>
+                </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-success">Guardar Expediente</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

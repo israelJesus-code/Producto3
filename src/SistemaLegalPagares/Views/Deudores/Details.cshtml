@@ -1,0 +1,18 @@
+@model SistemaLegalPagares.Models.Deudor
+@{
+    ViewData["Title"] = "Detalle de Deudor";
+}
+
+<h1>@Model.NombreCompleto</h1>
+<dl class="row">
+    <dt class="col-sm-3">CURP</dt><dd class="col-sm-9">@Model.CURP</dd>
+    <dt class="col-sm-3">INE</dt><dd class="col-sm-9">@Model.INE</dd>
+    <dt class="col-sm-3">RFC</dt><dd class="col-sm-9">@Model.RFC</dd>
+    <dt class="col-sm-3">Teléfono</dt><dd class="col-sm-9">@Model.Telefono</dd>
+    <dt class="col-sm-3">Correo</dt><dd class="col-sm-9">@Model.Correo</dd>
+    <dt class="col-sm-3">Dirección</dt><dd class="col-sm-9">@Model.Direccion</dd>
+    <dt class="col-sm-3">Población</dt><dd class="col-sm-9">@Model.Poblacion</dd>
+    <dt class="col-sm-3">Fecha de Registro</dt><dd class="col-sm-9">@Model.FechaRegistro.ToLocalTime()</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

@@ -1,0 +1,39 @@
+@model IEnumerable<SistemaLegalPagares.Models.Expediente>
+@{
+    ViewData["Title"] = "Expedientes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Expedientes</h1>
+        <p class="text-muted mb-0">Administración de carpetas legales y pagarés asociados</p>
+    </div>
+    <a asp-action="Create" class="btn btn-success">+ Nuevo Expediente</a>
+</div>
+
+<div class="card">
+    <div class="card-header">Listado de Expedientes</div>
+    <table class="table mb-0">
+        <thead>
+            <tr><th>Número de Expediente</th><th>Cliente</th><th>Fecha de Creación</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+        @if (!Model.Any())
+        {
+            <tr><td colspan="4" class="text-center text-muted">No hay expedientes registrados.</td></tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NumeroExpediente</td>
+                <td>@(item.Cliente?.NombreCompleto ?? "Sin cliente asociado")</td>
+                <td>@item.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Ver detalles</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

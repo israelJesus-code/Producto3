@@ -1,0 +1,85 @@
+@model SistemaLegalPagares.Models.Pagare
+@{
+    ViewData["Title"] = $"Pagaré #{Model.Id}";
+    var deudorPrincipal = Model.PagareDeudores.Select(pd => pd.Deudor).FirstOrDefault();
+}
+
+<div class="card mx-auto" style="max-width:800px; background:#eaf7ea;">
+    <div class="card-body">
+        <table class="table table-borderless mb-2">
+            <tr>
+                <td style="width:20%"><strong>PAGARÉ</strong><br />No. @Model.SerieDesde de @Model.SerieHasta</td>
+                <td style="width:35%">
+                    <div class="small text-muted">LUGAR DE EXPEDICIÓN</div>
+                    @Model.LugarExpedicion
+                </td>
+                <td style="width:20%">
+                    <div class="small text-muted">DÍA / MES / AÑO</div>
+                    @Model.FechaExpedicion.Day / @Model.FechaExpedicion.Month / @Model.FechaExpedicion.Year
+                </td>
+                <td style="width:25%">
+                    <div class="small text-muted">BUENO POR</div>
+                    <strong>$@Model.MontoTotal.ToString("N2")</strong>
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            Debo(emos) y pagaré(mos) incondicionalmente sin protesto este pagaré en el lugar y fechas citadas
+            donde elija el tenedor el día de su vencimiento a la orden de <strong>@Model.Acreedor</strong>
+            en <strong>@(Model.LugarPagoPagare ?? Model.LugarExpedicion)</strong> el día
+            <strong>@Model.FechaVencimiento.ToString("dd 'de' MM 'de' yyyy")</strong>.
+        </p>
+
+        <p><strong>La cantidad de:</strong><br />@Model.MontoLetra.ToUpper()</p>
+
+        <p class="small">
+            VALOR RECIBIDO A MI (NUESTRA) ENTERA SATISFACCIÓN, ESTE PAGARÉ FORMA PARTE DE UNA SERIE NUMERADA
+            DEL @Model.SerieDesde AL @Model.SerieHasta Y TODOS ESTÁN SUJETOS A LA CONDICIÓN DE QUE NO PAGARSE
+            CUALQUIERA DE ELLOS A SU VENCIMIENTO, SERÁN EXIGIBLES TODOS LOS QUE LE SIGUEN EN NÚMERO,
+            ADEMÁS DE LOS YA VENCIDOS. CAUSARÁN INTERESES MORATORIOS DEL @Model.InteresMoratorio % POR CADA
+            MES O FRACCIÓN, CONFORME A LO DISPUESTO POR EL ART. 174 Y 152 DE LA LEY GENERAL DE TÍTULOS Y
+            OPERACIONES DE CRÉDITO.
+        </p>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr><th>NOMBRE Y DATOS DEL DEUDOR</th><th>AVAL</th><th>DEUDOR</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <p><strong>NOMBRE:</strong> @deudorPrincipal?.NombreCompleto</p>
+                        <p><strong>DOMICILIO:</strong> @deudorPrincipal?.Direccion</p>
+                        <p><strong>POBLACIÓN:</strong> @deudorPrincipal?.Poblacion</p>
+                        @if (Model.PagareDeudores.Count > 1)
+                        {
+                            <p class="small text-muted">
+                                + @(Model.PagareDeudores.Count - 1) deudor(es) adicional(es)
+                            </p>
+                        }
+                    </td>
+                    <td class="text-center align-middle">
+                        @if (!string.IsNullOrWhiteSpace(Model.FirmaAvalBase64))
+                        {
+                            <img src="@Model.FirmaAvalBase64" style="max-height:60px;" />
+                        }
+                        <div class="small text-muted">FIRMA AVAL</div>
+                    </td>
+                    <td class="text-center align-middle">
+                        @if (!string.IsNullOrWhiteSpace(Model.FirmaBase64))
+                        {
+                            <img src="@Model.FirmaBase64" style="max-height:60px;" />
+                        }
+                        <div class="small text-muted">FIRMA DEUDOR</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="Pdf" asp-route-id="@Model.Id" class="btn btn-success" target="_blank">Imprimir / Guardar como PDF</a>
+    <a asp-controller="Expedientes" asp-action="Details" asp-route-id="@Model.ExpedienteId" class="btn btn-secondary">Volver</a>
+</div>

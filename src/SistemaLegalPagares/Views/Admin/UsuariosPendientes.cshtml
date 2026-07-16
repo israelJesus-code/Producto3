@@ -1,0 +1,55 @@
+@model List<SistemaLegalPagares.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Usuarios Pendientes";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p class="text-muted">Aprueba o rechaza abogados registrados.</p>
+
+@if (TempData["Mensaje"] is string mensaje)
+{
+    <div class="alert alert-success">@mensaje</div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <div class="card"><div class="card-body"><strong>Pendientes:</strong> @Model.Count</div></div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-success">No hay usuarios pendientes.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Fecha de Registro</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.NombreCompleto</td>
+                <td>@user.Email</td>
+                <td>@user.FechaRegistro.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <form asp-action="Aprobar" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                    </form>
+                    <form asp-action="Rechazar" asp-route-id="@user.Id" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Rechazar y eliminar a @user.Email?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

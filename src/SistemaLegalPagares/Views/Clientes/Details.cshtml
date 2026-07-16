@@ -1,0 +1,25 @@
+@model SistemaLegalPagares.Models.Cliente
+@{
+    ViewData["Title"] = "Detalle de Cliente";
+}
+
+<h1>@Model.NombreCompleto</h1>
+<dl class="row">
+    <dt class="col-sm-3">CURP</dt><dd class="col-sm-9">@Model.CURP</dd>
+    <dt class="col-sm-3">INE</dt><dd class="col-sm-9">@Model.INE</dd>
+    <dt class="col-sm-3">RFC</dt><dd class="col-sm-9">@Model.RFC</dd>
+    <dt class="col-sm-3">Teléfono</dt><dd class="col-sm-9">@Model.Telefono</dd>
+    <dt class="col-sm-3">Correo</dt><dd class="col-sm-9">@Model.Correo</dd>
+    <dt class="col-sm-3">Dirección</dt><dd class="col-sm-9">@Model.Direccion</dd>
+    <dt class="col-sm-3">Fecha de Registro</dt><dd class="col-sm-9">@Model.FechaRegistro.ToLocalTime()</dd>
+</dl>
+
+<h5>Expedientes asociados</h5>
+<ul>
+@foreach (var exp in Model.Expedientes)
+{
+    <li><a asp-controller="Expedientes" asp-action="Details" asp-route-id="@exp.Id">@exp.NumeroExpediente</a></li>
+}
+</ul>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

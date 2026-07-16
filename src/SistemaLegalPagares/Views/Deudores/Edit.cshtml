@@ -1,0 +1,53 @@
+@model SistemaLegalPagares.Models.Deudor
+@{
+    ViewData["Title"] = "Editar Deudor";
+}
+
+<div class="card" style="max-width:640px;">
+    <div class="card-header bg-warning">Editar Deudor</div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FechaRegistro" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NombreCompleto" class="form-label"></label>
+                    <input asp-for="NombreCompleto" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="RFC" class="form-label"></label>
+                    <input asp-for="RFC" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="CURP" class="form-label"></label>
+                    <input asp-for="CURP" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="INE" class="form-label"></label>
+                    <input asp-for="INE" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Telefono" class="form-label"></label>
+                    <input asp-for="Telefono" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Correo" class="form-label"></label>
+                    <input asp-for="Correo" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Poblacion" class="form-label"></label>
+                    <input asp-for="Poblacion" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="Direccion" class="form-label"></label>
+                    <textarea asp-for="Direccion" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>

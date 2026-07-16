@@ -1,0 +1,23 @@
+# Secrets
+.env
+
+# .NET
+bin/
+obj/
+*.user
+appsettings.Local.json
+
+# SQL Server data volume (bind mount, if used)
+.mssql-data/
+
+# IDE
+.vs/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# Reference material (Producto 1 docs, not part of Producto 3's own work)
+P1_PAGARES.docx.pdf
+repo_prod1.md

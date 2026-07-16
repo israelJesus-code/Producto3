@@ -1,0 +1,13 @@
+@model SistemaLegalPagares.Models.Deudor
+@{
+    ViewData["Title"] = "Eliminar Deudor";
+}
+
+<h1 class="text-danger">Eliminar Deudor</h1>
+<p>¿Seguro que deseas eliminar a <strong>@Model.NombreCompleto</strong>?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+</form>

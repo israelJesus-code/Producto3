@@ -1,0 +1,27 @@
+@model SistemaLegalPagares.Models.Expediente
+@{
+    ViewData["Title"] = $"Pagarés de {Model.NumeroExpediente}";
+}
+
+<h1>Pagarés del expediente @Model.NumeroExpediente</h1>
+<p class="text-muted">Historial de pagarés con opción de descarga/impresión individual.</p>
+
+<table class="table table-striped">
+    <thead><tr><th>No.</th><th>Acreedor</th><th>Monto</th><th>Fecha Vencimiento</th><th>Creado por</th><th>Fecha Creación</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.Pagares.OrderBy(p => p.SerieDesde))
+    {
+        <tr>
+            <td>@p.Id</td>
+            <td>@p.Acreedor</td>
+            <td>$@p.MontoTotal.ToString("N2")</td>
+            <td>@p.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+            <td>@p.Usuario?.NombreCompleto</td>
+            <td>@p.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+            <td><a asp-controller="Pagares" asp-action="Pdf" asp-route-id="@p.Id" class="btn btn-success btn-sm" target="_blank">Descargar / Imprimir PDF</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Volver al expediente</a>

@@ -1,0 +1,81 @@
+@model SistemaLegalPagares.Models.Pagare
+@{
+    ViewData["Title"] = "Editar Pagaré";
+}
+
+<div class="card" style="max-width:900px; background:#eaf7ea;">
+    <div class="card-header bg-warning">PAGARÉ - Editar</div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExpedienteId" />
+            <input type="hidden" asp-for="UsuarioId" />
+            <input type="hidden" asp-for="FechaCreacion" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="LugarExpedicion" class="form-label"></label>
+                    <input asp-for="LugarExpedicion" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="FechaExpedicion" class="form-label"></label>
+                    <input asp-for="FechaExpedicion" type="date" class="form-control" value="@Model.FechaExpedicion.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="MontoTotal" class="form-label">Bueno por ($)</label>
+                    <input asp-for="MontoTotal" type="number" step="0.01" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Acreedor" class="form-label">A la orden de (Acreedor)</label>
+                    <input asp-for="Acreedor" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="LugarPagoPagare" class="form-label">Lugar de Pago</label>
+                    <input asp-for="LugarPagoPagare" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FechaVencimiento" class="form-label"></label>
+                    <input asp-for="FechaVencimiento" type="date" class="form-control" value="@Model.FechaVencimiento.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="FechaVencimiento" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Beneficiario" class="form-label"></label>
+                    <input asp-for="Beneficiario" class="form-control" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="MontoLetra" class="form-label">La cantidad de (con letra)</label>
+                    <input asp-for="MontoLetra" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="SerieDesde" class="form-label"></label>
+                    <input asp-for="SerieDesde" type="number" min="1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SerieHasta" class="form-label"></label>
+                    <input asp-for="SerieHasta" type="number" min="1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InteresMoratorio" class="form-label">Interés Moratorio (%)</label>
+                    <input asp-for="InteresMoratorio" type="number" step="0.01" class="form-control" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Deudores asociados a este pagaré</label>
+                    <select name="deudorIds" asp-items="ViewBag.Deudores" multiple class="form-select" size="5"></select>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

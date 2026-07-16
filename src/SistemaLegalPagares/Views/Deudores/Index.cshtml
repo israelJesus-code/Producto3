@@ -1,0 +1,39 @@
+@model IEnumerable<SistemaLegalPagares.Models.Deudor>
+@{
+    ViewData["Title"] = "Deudores";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Deudores</h1>
+    <a asp-action="Create" class="btn btn-success">+ Nuevo Deudor</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th><th>CURP</th><th>INE</th><th>RFC</th>
+            <th>Teléfono</th><th>Correo</th><th>Dirección</th><th>Población</th><th>Fecha Registro</th><th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.NombreCompleto</td>
+            <td>@item.CURP</td>
+            <td>@item.INE</td>
+            <td>@item.RFC</td>
+            <td>@item.Telefono</td>
+            <td>@item.Correo</td>
+            <td>@item.Direccion</td>
+            <td>@item.Poblacion</td>
+            <td>@item.FechaRegistro.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

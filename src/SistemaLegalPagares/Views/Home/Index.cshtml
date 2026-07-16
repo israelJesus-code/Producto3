@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="card mb-4">
+    <div class="card-body border-start border-success border-4">
+        <h2>Sistema Legal de Pagarés</h2>
+        <p class="text-muted mb-0">Gestión de expedientes, pagarés y documentos legales de forma segura.</p>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="fs-1">📁</div>
+                <h5>Expedientes</h5>
+                <p class="text-muted small">Consulta, crea y administra los expedientes legales de tus clientes.</p>
+                <a asp-controller="Expedientes" asp-action="Index" class="btn btn-success w-100 mb-2">Ver Expedientes</a>
+                <a asp-controller="Expedientes" asp-action="Create" class="btn btn-outline-success w-100">Crear Expediente</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="fs-1">📄</div>
+                <h5>Pagarés</h5>
+                <p class="text-muted small">Visualiza los pagarés registrados y accede a su vista previa o impresión.</p>
+                <a asp-controller="Pagares" asp-action="Index" class="btn btn-primary w-100 mb-2">Ver Pagarés</a>
+                <a asp-controller="Expedientes" asp-action="Index" class="btn btn-outline-primary w-100">Crear desde Expediente</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="fs-1">🛡️</div>
+                <h5>Panel de Administración</h5>
+                <p class="text-muted small">Autoriza abogados, revisa usuarios pendientes y administra el acceso al sistema.</p>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Admin" asp-action="UsuariosPendientes" class="btn btn-warning w-100">Ir al Panel Admin</a>
+                }
+                else
+                {
+                    <button class="btn btn-outline-secondary w-100" disabled>Solo administradores</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info mt-4">
+    <strong>Flujo recomendado:</strong> primero registra un cliente y un deudor, después crea un expediente y desde
+    el detalle del expediente genera los pagarés correspondientes.
+</div>
