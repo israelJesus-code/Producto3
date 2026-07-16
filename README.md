@@ -52,8 +52,3 @@ src/SistemaLegalPagares/     # Proyecto principal (MVC + API)
 tests/SistemaLegalPagares.Tests/ # xUnit + Moq (unitarias) sobre el esquema de pruebas del Producto 1
 Dockerfile, docker-compose.yml   # Despliegue local
 ```
-
-## Referencia
-
-Producto 1 (caso de estudio base): `P1_PAGARES.docx.pdf` (no incluido en este repositorio por ser
-trabajo de otro equipo; usado solo como referencia de arquitectura).
